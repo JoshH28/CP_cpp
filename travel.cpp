@@ -1,0 +1,138 @@
+// [Verse 1]
+// Droppin' bombs in cups of coffee
+// You said it hit you all at once
+// I'm already tired and it's still mornin'
+// Then you clear your throat
+// Deep down I know that this is done
+// You tell me you're sorry and I'm laughin'
+// You say sometimes these things just don't work out
+// 'Cause you're only human, this shit happens
+// Wait, I don't mean to stop you
+// But darlin', I have to cut you off
+
+// [Chorus]
+// Don't say, don't say you're human
+// Don't say, don't say it's not your fault
+// I won't take the bait or these excuses that you're usin'
+// Don't say, don't say you're human
+
+// [Hook]
+// Don't say, don't say
+// Don't say, don't say
+// Don't say you're human
+
+// [Verse 2]
+// Say you regret the way you acted
+// Come on, admit you let me down
+// Say that I'm better in your absence
+// Go right ahead, say almost anything you want
+
+// [Chorus]
+// Just don't say, don't say you're human
+// Don't say, don't say it's not your fault
+// I won't take the bait or these excuses that you're usin'
+// Don't say, don't say you're human
+
+// [Hook]
+// Don't say, don't say
+// Don't say, don't say
+// Don't say you're human
+
+// [Chorus]
+// Don't say, don't say you're human
+// Don't say, don't say it's not your fault
+// I won't take the bait or these excuses that you're usin'
+// Don't say, don't say you're human
+// Just don't say, don't say you're human
+// Don't say, don't say it's not your fault
+// I won't take the bait or these excuses that you're usin'
+// Don't say, don't say you're human, oh
+
+// [Hook]
+// Don't say, don't say
+// Don't say, don't say
+// Don't say you're human
+// [Outro]
+// No way, no way you're human
+#include <bits/stdc++.h>
+using namespace std;
+#define fi first
+#define se second
+#define pb push_back
+#define MP make_pair
+#define inf 0x3f3f3f3f
+#define pi pair<long long int,long long int>
+#define gcd(x,y) __gcd( x, y)
+#define ALL(x) x.begin(),x.end()
+#define pll pair<long long,long long>
+#define debug(x) cerr<<#x<<':'<<x<<endl
+#define rep(x,start,end) for(auto x=(start)-((start)>(end));x!=(end)-((start)>(end));((start)<(end)?x++:x--))
+#define pub push_back
+#define pob pop_back
+#define puf push_front
+#define pof pop_front
+#define lb lower_bound
+#define ub upper_bound
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace std;
+using namespace __gnu_pbds;
+#define INTMAX 2147483647
+#define INT_MAX LONG_LONG_MAX
+#define int long long
+typedef long long ll;
+typedef unsigned long long ull;
+typedef long double ld;
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+typedef tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset; //upper_bound and lower_bound swap functions in multi
+typedef tree<ll,null_type,less<ll>,rb_tree_tag,tree_order_statistics_node_update> ordered_set_ll;
+typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset_ll;
+mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
+template<class K,class V> using ht = gp_hash_table<K,V,hash<K>,equal_to<K>,direct_mask_range_hashing<>,linear_probe_fn<>,hash_standard_resize_policy<hash_exponential_size_policy<>,hash_load_check_resize_trigger<>,true>>;
+// scem unordered_map and unordered_set, to use umap use ht<ll,ll>, emplace doesnt exist so use .insert(), .reserve() is .resize(),  to declare uset is ht<ll,null_type>, all other operations are same as regular
+
+void solve() {
+    ll minn = 0, maxn = 0, n, start, t1; cin >> n >> start;
+    unordered_set<ll> lol;
+    vector<ll> lessthanstart, morethanstart, arr;
+    for (ll q = 0; q < n; q++) {
+        cin >> t1; 
+        arr.pub(t1);
+    }
+    sort(arr.begin(), arr.end());
+    minn = max(arr[n-1], start)-min(arr[0], start);
+    ll ans1 = 0, ans2 = 0, prev = start;
+    for (ll q = 0; q < n; q++) {
+        if (q%2 == 1) {
+            ans1 += max(abs(prev-arr[n - q/2 -1]), abs(arr[n - q/2 -1]-start)); 
+            prev = arr[n - q/2 -1];
+        } else {
+            ans1 += max(abs(prev-arr[q/2]), abs(arr[q/2]-start));
+            prev = arr[q/2];
+        }
+        //cout << ans1 << " " << prev << "\n";
+    }
+    //cout << "\n";
+    prev = start;
+    for (ll q = 0; q < n; q++) {
+        if (q%2==0) {
+            ans2 += max(abs(prev-arr[n - q/2 -1]), abs(arr[n - q/2 -1]-start)); 
+            prev = arr[n - q/2 -1];
+        } else {
+            ans2 += max(abs(prev-arr[q/2]), abs(arr[q/2]-start));
+            prev = arr[q/2];
+        }
+        //cout << ans2 << " " << prev << "\n";
+    }
+    //cout << "\n";
+    maxn = max(ans1, ans2);
+    cout << minn << " " << maxn;
+    
+}
+
+signed main() {
+ios_base::sync_with_stdio(false);cin.tie(NULL);
+  ll tc=1;
+  //cin >> tc;
+  for (ll q = 0; q < tc; q++) {solve();}
+}

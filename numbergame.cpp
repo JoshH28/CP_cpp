@@ -60,8 +60,9 @@ template<class K,class V> using ht = gp_hash_table<K,V,hash<K>,equal_to<K>,direc
 // scem unordered_map and unordered_set, to use umap use ht<ll,ll>, emplace doesnt exist so use .insert(), .reserve() is .resize(),  to declare uset is ht<ll,null_type>, all other operations are same as regular
 
 void solve() {
-    ll n, target, ans = -INT_MAX; cin >> n >> target;
+    ll n, target; cin >> n >> target; ll ans = target-INT_MAX;
     ll a[n], b[n], c[n];
+    ordered_multiset_ll pbds;
     for (ll q = 0; q < n; q++) {
         cin >> a[q];
     }
@@ -70,26 +71,25 @@ void solve() {
     }
     for (ll q = 0; q < n; q++) {
         cin >> c[q];
+        pbds.insert(c[q]);
     }
+    sort(c, c+n);
     for (ll q = 0; q < n; q++) {
         for (ll w = 0; w < n; w++) {
             ll bruh = a[q]*b[w];
-            ll yes = abs(bruh-target);
-            ll l = lower_bound(c, c+n, yes)-c; ll u = upper_bound(c, c+n, yes)-c;
-            cout << l << " " << b << " ";
-            if (b )
+            ll yes = target-bruh;
+            ll l = pbds.order_of_key(yes);
+            ll u = l+1;
+            if (l == n) {l-=1;}
+            if (u >= n) {u = n-1;}
             ll huh = bruh+c[l]; ll hu = c[u]+bruh;
-            cout << huh << " " << hu;
-            if (abs(huh-target) <= abs(ans-target)) {
-                if (huh > ans) {
-                    ans = huh;   
-                }
-            } else if (hu < abs(target-ans)) {
+            //cout << huh << " " << hu << "\n";
+            if (abs(huh-target) < abs(ans-target)) {
                 ans = huh;
-            } else {
-                
+            }  
+            if (abs(target-hu) <= abs(target-ans)) {
+                ans = hu;
             }
-            
         }
     }
     cout << ans;

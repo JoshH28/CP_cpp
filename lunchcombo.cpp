@@ -57,7 +57,7 @@ mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
 
 void solve() {
     ll mn, sn, fn; cin >> mn >> sn >> fn;
-    ll mains[mn]; ll sides[sn];ll sidesdp[sn];
+    ll mains[mn]; ll sides[sn]; ll sidesdp[sn+1];
     for (ll q = 0; q < mn; q++) {
         cin >> mains[q];
     }
@@ -66,36 +66,41 @@ void solve() {
     }
     sort(mains, mains+mn); sort(sides, sides+sn);
     sidesdp[0] = sides[0];
-    for (ll q = 1; q<= sn; q++) {
-        sidesdp[q] = sidesdp[q-1]+sides[q];
+    for (ll q = 1; q <= sn; q++) {
+        sidesdp[q] = sidesdp[q-1] + sides[q];
     }
-    ll hi = 10e12, lo = 0;
-    ll cc = 0, cnt = 0;
-    priority_queue<pair<ll,ll>> pq;
-    while (lo < hi) {
-        ll mid = (lo+hi)/2;
-        cc = 0;
-        cnt = 0;
-        pq.clear();
+    ll lo = 0, hi = 1e18;
+    ll minCost = LONG_LONG_MAX;
+    while (lo <= hi) {
+        ll mid = (lo + hi)/2; // this is the current value that we want to try
+        ll counter = 0;
         for (ll q = 0; q < mn; q++) {
-            ll budget = mid-mains[q];
-            ll chosensn = upper_bound(sides, sides+sn, budget)-sides;
-            if (chosensn == 0) {
-                break;
-            }
-            ll cost = sidesdp[chosensn-1];
-            cnt+=chosensn;
-            cc += (chosensn*mains[q]);
-            cc += cost;
-            pq.push(MP(q, chosensn));
+            ll cm = mains[q];
+            ll maxS = upper_bound(sides, sides+sn, mid - cm)-sides;
+            counter += maxS;
         }
-        if (cnt >= k) {
-            hi = mid;
-        } else {
+        if (fn <= counter) {
+            hi = mid-1;
+            minCost = min(mid, minCost);
+            //cout << cost << " " << mid << "\n";
+        } else if (counter < fn) {
             lo = mid+1;
         }
     }
-    for (ll q = 0; q < )
+    //cout << minCost << " ";
+    ll counter = 0, ans = 0;
+    for (ll q = 0; q < mn; q++) {
+        ll cm = mains[q];
+        ll maxS = upper_bound(sides, sides+sn, minCost - cm)-sides;
+        counter += maxS;
+        if (maxS == 0) ans += 0;
+        else ans += sidesdp[maxS-1];
+        ans = ans + (maxS*cm);
+        //if (counter == fn) break;
+        //cout << maxS << " ";
+    }
+    ll lol = ans  - (counter-fn)*minCost;
+    cout << lol;
 }
 
 int main() {

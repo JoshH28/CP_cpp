@@ -45,33 +45,8 @@ typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_n
 mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
 
 void solve() {
-  ll n, mod; cin >> n >> mod;
-  queue<pair<ll,ll>> qu; unordered_set<ll> uset;
-  ll arr[n]; for (ll q = 0; q < n; q++) {cin >> arr[q];}
-  qu.push(MP(-arr[0], 1)); qu.push(MP(arr[0], 1));
-  while(!qu.empty()) {
-    ll cs1 = qu.front().first; ll cn = qu.front().second;
-    qu.pop();
-    ll cs2 = cs1;
-    cs1 += arr[cn];
-    cs2  = cs2-arr[cn];
-    if (cn == n-1) {
-      if (cs1 > 0) {
-        uset.insert(cs1);
-      }
-      if (cs2 > 0) {
-        uset.insert(cs2); 
-      }
-    } else {
-      qu.push(MP(cs1, cn+1));
-      qu.push(MP(cs2, cn+1));
-    }
-  }
-  bool yes = 1;
-  for (auto it: uset) {
-    if (it%mod == 0) {cout << "Divisible"; yes = 0; break;}
-  }
-  if (yes) {cout << "Not divisible";}
+  ll n, t1; cin >> n;
+  vector<ll> bruh;
 }
 
 int main() {

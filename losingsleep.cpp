@@ -1,0 +1,94 @@
+// Walking the streets at night
+// Holding my hand so tight
+// Love never felt so right
+// But now I'm haunted
+// I'm sleeping alone and I
+// Think of you all the time
+// Can't help but realize
+// You're all I wanted
+// And I can't erase all of the ways that I can't replace you
+// I miss the taste of all the nights that I can't forget you
+// I can't erase all of the ways that I can't replace you
+// And I can't replace you
+// So if you call me saying that you want me to tell the truth
+// I'd still run back to you
+// And if you ever, if you ever tell me you want me too
+// I'd still run back to you
+// I been emotional
+// Ever since we let go
+// Lost all my self control
+// If I'm being honest
+// Said that we'd give it time
+// Thought by now, I'd be fine
+// Still broken up inside
+// Just like a promise
+// And I can't erase all of the ways that I can't replace you
+// I miss the taste of all the nights that I can't forget you
+// I can't erase all of the ways that I can't replace you
+// And I can't replace you
+// So if you call me saying that you want me to tell truth
+// I'd still run back to you
+// And if you ever, if you ever tell me you want me too
+// I'd still run back to you
+// So if you call me saying that you want me to tell truth
+// I'd still run back to you
+// And if you ever, if you ever tell me you want me too
+// I'd still run back to you
+// And I can't erase all of the ways that I can't replace you
+// I miss the taste of all the nights that I can't forget you
+// I can't erase all of the ways that I can't replace you
+// And I can't replace you
+#include <bits/stdc++.h>
+using namespace std;
+#define fi first
+#define se second
+#define pb push_back
+#define MP make_pair
+#define inf 0x3f3f3f3f
+#define pi pair<long long int,long long int>
+#define gcd(x,y) __gcd( x, y)
+#define ALL(x) x.begin(),x.end()
+#define pll pair<long long,long long>
+#define debug(x) cerr<<#x<<':'<<x<<endl
+#define rep(x,start,end) for(auto x=(start)-((start)>(end));x!=(end)-((start)>(end));((start)<(end)?x++:x--))
+#define pub push_back
+#define pob pop_back
+#define puf push_front
+#define pof pop_front
+#define lb lower_bound
+#define ub upper_bound
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace std;
+using namespace __gnu_pbds;
+#define INTMAX 2147483647
+#define INT_MAX LONG_LONG_MAX
+#define int long long
+typedef long long ll;
+typedef unsigned long long ull;
+typedef long double ld;
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+typedef tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset; //upper_bound and lower_bound swap functions in multi
+typedef tree<ll,null_type,less<ll>,rb_tree_tag,tree_order_statistics_node_update> ordered_set_ll;
+typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset_ll;
+mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
+template<class K,class V> using ht = gp_hash_table<K,V,hash<K>,equal_to<K>,direct_mask_range_hashing<>,linear_probe_fn<>,hash_standard_resize_policy<hash_exponential_size_policy<>,hash_load_check_resize_trigger<>,true>>;
+// scem unordered_map and unordered_set, to use umap use ht<ll,ll>, emplace doesnt exist so use .insert(), .reserve() is .resize(),  to declare uset is ht<ll,null_type>, all other operations are same as regular
+
+void solve() {
+    ll n, ans = INT_MAX, curr2 = 1, pow = 0; cin >> n;
+    while (curr2 <= n) {
+        ll lol = (n/curr2);
+        ll sus = n - lol*curr2;
+        ans = min(ans, sus+lol+pow);
+        pow++; curr2*=2;
+    }
+    cout << ans;
+}
+
+signed main() {
+ios_base::sync_with_stdio(false);cin.tie(NULL);
+  ll tc=1;
+  //cin >> tc;
+  for (ll q = 0; q < tc; q++) {solve();}
+}

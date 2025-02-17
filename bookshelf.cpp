@@ -44,48 +44,36 @@ typedef tree<ll,null_type,less<ll>,rb_tree_tag,tree_order_statistics_node_update
 typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset_ll;
 mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
 void solve() {
-    ll qnum, leftn=0, rightn=0, t1, t2; cin >> qnum;
+    ll qnum, leftn=0, rightn=0, type, hold; cin >> qnum;
     deque<ll> dq;
-    unordered_map<ll,ll> left;
-    unordered_map<ll,ll> right;
+    unordered_map<ll, ll> mp;
     for (ll q = 0; q < qnum; q++) {
-        cin >> t1;
-        if (t1 == 1) {
-            cin >> t2;
-            leftn+=1;
-            left[t2] = leftn;
-            dq.push_front(t2);
-        } else if (t1 == 2) {
-            cin >> t2;
-            rightn+=1;
-            right[t2] = rightn;
-            dq.push_back(t2);
-        } else if (t1 == 3) {
-            left.erase(dq.front());
-            leftn-=1;
+        cin >> type;
+        if (type == 1) {
+            cin >> hold;
+            mp[hold] = leftn;
+            leftn--;
+            dq.push_front(hold);
+        } else if (type == 2) {
+            cin >> hold;
+            rightn++;
+            mp[hold] = rightn;
+            dq.push_back(hold);
+        } else if (type == 3) {
             dq.pop_front();
-        } else if (t1 == 4) {
-            right.erase(dq.back());
-            rightn-=1;
+            leftn++;
+        } else if (type == 4) {
+            rightn--; 
             dq.pop_back();
-        } else if (t1 == 5) {
-            cin >> t2;
-            ll ans = 0;
-            if (right[t2] != 0) {
-                cout << leftn+right[t2] << "\n";
-            } else {
-                cout << leftn-left[t2]+1 << "\n";
-            }
-        } else if (t1 == 6) {
-            cin >> t2;
-            ll ans = 0;
-            if (left[t2] != 0) {
-                cout << rightn+left[t2] << "\n";
-            } else {
-                cout << rightn-right[t2]+1 << "\n";
-            }
-        } 
-        
+        } else if (type == 5) {
+            cin >>hold;
+            ll currPos = mp[hold];
+            cout << mp[hold]-leftn << "\n";
+        } else {
+            cin >> hold;
+            ll currPos = mp[hold];
+            cout << rightn -currPos +1<< "\n";
+        }
     }
 }
 

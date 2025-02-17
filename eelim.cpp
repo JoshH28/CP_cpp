@@ -1,17 +1,81 @@
-//Super idol 的笑容都没你的甜
-//八月正午的阳光都没你耀眼
-//热爱105度的你
-//滴滴清纯的蒸馏水
-//你不知道你有多可爱
-//跌倒后会傻笑着再站起来
-//你从来都不轻言失败
-//对梦想的执着一直不曾更改
-//很安心
-//当你对我说
-//不怕有我在
-//放着让我来
-//勇敢追自己的梦想
-//那坚定的模样
+// [Verse 1]
+// Saw myself
+// Two years ago and I was someone else
+// Back then, I loved just like a carousel
+// So many faces going in and out
+// That's the way it felt
+
+// [Pre-Chorus]
+// Like a distant sort of conversation of you and I
+// You and I
+// Feels like I'm running from my reputation every night
+// Every night
+
+// [Chorus]
+// 'Cause I've lived different lives
+// Different lives
+// Before you ever made me feel alive
+// Feel alive
+// I haven't felt this fucking terrified
+// Terrifiеd
+// Before you, ooh
+// You, ooh
+// Those wеre different times
+// Different times
+// You're not the one I was at twenty-five
+// Drunk and high
+// Those are all the lives I left behind
+// Left behind for you, ooh
+// You, ooh
+
+// [Verse 2]
+// I see it now (See it now)
+// Few years ahead, it's only you around (You around)
+// Hopped off the wave that kept me watered down (Watered down)
+// And left the old me in a different town
+// Somewhere it can't be found
+
+// [Pre-Chorus]
+// Like a distant sort of conversation
+// I try to hide
+// From you and I
+// Feels like I'm closer to a revelation every night
+// Every night
+
+// [Chorus]
+// 'Cause I've lived different lives
+// Different lives
+// Before you ever made me feel alive
+// Feel alive
+// I haven't felt this fucking terrified
+// Terrified
+// Before you, ooh
+// You, ooh
+// Those were different times
+// Different times
+// You're not the one I was at twenty-five
+// Drunk and high
+// Those are all the lives I left behind
+// Left behind for you, ooh
+// You, ooh
+// [Bridge]
+// I've lived different lives
+// Different lives
+// Before you ever made me feel alive
+// Feel alive
+// I haven't felt this fucking terrified
+// Terrified
+// Before you, ooh
+// Before you, ooh
+
+// [Chorus]
+// Those were different times
+// Different times
+// You're not the one I was at twenty-five
+// Drunk and high
+// Those are all the lives I left behind
+// Left behind for you, ooh
+// You, ooh
 #include <bits/stdc++.h>
 using namespace std;
 #define fi first
