@@ -55,35 +55,13 @@ typedef tree<ll,null_type,less<ll>,rb_tree_tag,tree_order_statistics_node_update
 typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset_ll;
 mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
 
-void solve() {
+ll dp[10001][101];
+
+ll memo(ll index, ll num) {
+    
 }
 
 int main() {
     ios_base::sync_with_stdio(false);cin.tie(NULL);
-    ll n, cnt=0, div; cin >> n >> div;
-    ll nums[n];
-    unordered_map<ll,ll>mp;
-    for (ll q = 0; q < n; q++) {
-        cin >> nums[q];
-        cnt+=abs(nums[q]);
-    }
-    mp[-nums[0]] = 1; mp[nums[0]] = 1;
-    for (ll q = 1;q < n; q++) {
-        for (ll w=-cnt-1; w<=cnt+1;w++) {
-            if(mp[w] == q) {
-                mp[w+nums[q]] = q+1;
-                mp[w-nums[q]] = q+1;
-            } 
-        }
-    }
-    for (ll q = -cnt-1; q <= cnt+1; q++) {
-        //cout << q << " " << mp[q] << "\n";
-        if (mp[q] == n) {
-            if (abs(q)%div == 0) {
-                cout << "Divisible";
-                return 0;
-            } 
-        }
-    }
-    cout << "Not divisible"; return 0;
+    
 }

@@ -47,6 +47,7 @@ using namespace std;
 using namespace std;
 using namespace __gnu_pbds;
 #define INTMAX 2147483647
+#define INT_MAX LONG_LONG_MAX
 typedef long long ll;
 typedef unsigned long long ull;
 typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
@@ -55,31 +56,55 @@ typedef tree<ll,null_type,less<ll>,rb_tree_tag,tree_order_statistics_node_update
 typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset_ll;
 mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
 
-ll solve() {
-    ll n, one = 1; cin >> n;
-    ll energy[n]; ll disgust[n]; vector<ll> adjlist[n+1];
-    for (ll q = 0; q < n; q++) {cin >> energy[q];}
-    for (ll q = 0; q < n; q++) {
-        cin >> disgust[q]; ll target = q+disgust[q]+1;
-        if (target > n) {continue;}
-        adjlist[target].push_back(q);
+void solve() {
+    ll nn, en, t1, t2, t3; cin >> nn >> en;
+    vector<pll> adjlist[nn+1];
+    queue<pll> edges; 
+    ll distfs[nn+1]; memset(distfs, inf, sizeof(distfs));
+    ll distfe[nn+1]; memset(distfe, inf, sizeof(distfe));
+    for (ll q = 0; q < en; q++) {
+        cin >> t1 >> t2 >> t3;
+        adjlist[t1].push_back(MP(t2, t3));
+        adjlist[t2].push_back(MP(t1, t3));
+        edges.push(MP(t1, t2));
     }
-    ll dp[n+1]; memset(dp, -1, sizeof(dp)); dp[0] = energy[0];
-    for (ll q = 1; q <= n; q++) {
-        dp[q] = max(dp[q], dp[q-1]-energy[q-1]-one);
-        for (auto it: adjlist[q]) {
-            dp[q] = max(dp[it]-q+it, dp[q]);
+    priority_queue<pll, vector<pll>, greater<pll>> pq;
+    pq.push(MP(0,1));
+    while (!pq.empty()) {
+        ll dist = pq.top().first; ll node = pq.top().second;
+        pq.pop();
+        if (distfs[node] < dist) {continue;}
+        for (auto it: adjlist[node]) {
+            ll cn = it.first; ll d = it.second+dist;
+            if (distfs[cn] <= d) {continue;}
+            distfs[cn] = d;
+            pq.push(MP(d, cn));
         }
-        if (dp[q] == -1) {continue;}
-        dp[q] += energy[q];
     }
-    ll ans = dp[n-1];
-    return ans;
+    pq.push(MP(0, nn));
+    while (!pq.empty()) {
+        ll dist = pq.top().first; ll node = pq.top().second;
+        pq.pop();
+        if (distfe[node] < dist) {continue;}
+        for (auto it: adjlist[node]) {
+            ll cn = it.first; ll d = it.second+dist;
+            if (distfe[cn] <= d) {continue;}
+            distfe[cn] = d;
+            pq.push(MP(d, cn));
+        }
+    }
+    ll ans = -INT_MAX;
+    while(!edges.empty()) {
+        ll x = edges.front().first; 
+        ll y = edges.front().second;
+        ll dx1 = distfs[x]; ll dx2 = distfe[x];
+        ll dy1 = distfs[y]; ll dy2 = distfe[y];
+    }
 }
 
 int main() {
 ios_base::sync_with_stdio(false);cin.tie(NULL);
   ll tc=1;
   //cin >> tc;
-  for (ll q = 0; q < tc; q++) {cout << solve();}
+  for (ll q = 0; q < tc; q++) {solve();}
 }

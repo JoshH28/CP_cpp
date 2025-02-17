@@ -48,6 +48,7 @@ using namespace std;
 using namespace __gnu_pbds;
 #define INTMAX 2147483647
 #define INT_MAX LONG_LONG_MAX
+#define int long long
 typedef long long ll;
 typedef unsigned long long ull;
 typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
@@ -55,25 +56,43 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics
 typedef tree<ll,null_type,less<ll>,rb_tree_tag,tree_order_statistics_node_update> ordered_set_ll;
 typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset_ll;
 mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
+template<class K,class V> using ht = gp_hash_table<K,V,hash<K>,equal_to<K>,direct_mask_range_hashing<>,linear_probe_fn<>,hash_standard_resize_policy<hash_exponential_size_policy<>,hash_load_check_resize_trigger<>,true>>;
+// scem unordered_map and unordered_set, to use umap use ht<ll,ll>, emplace doesnt exist so use .insert(), .reserve() is .resize(),  to declare uset is ht<ll,null_type>, all other operations are same as regular
 
-void solve() {
-    ll n; cin >> n;
-    ll a[n+1]; ll b[n+1]; ll dp1[n+3]; ll dp2[n+3];
-    for (ll q = 1;q <= n; q++) {
-        cin >> a[q];
-    }
-    for (ll q = 1; q <= n; q++) {
-        cin >> b[q];
-    }
-    memset(dp1, 0, sizeof(dp1)); memset(dp2, 0, sizeof(dp2));
-    for (ll q = n; q >= 1; q--) {
-        dp1[q] = min(dp2[q+1]+a[q], dp2[q+2]+a[q]+a[q+1]);
-        dp2[q] = min(dp1[q+1]+b[q], dp1[q+2]+b[q]+b[q+1]);
-    }
-    cout << min(dp1[1], dp2[1]);
+ll a[500001], b[500001];
+ll dp[500000][3][2]; ll n;
+
+ll memo(ll index, ll consec, ll whichg) { // whichg = 0 means u, whichg = 1 means avatar
+    if (index == n) {return 0;}
+    if (dp[index][consec][whichg] != -1) {return dp[index][consec][whichg];}
+    ll ans = INT_MAX;
+    if (whichg == 0) {
+        ans = min(ans, memo(index+1, 1, 1)+a[index]);
+    } else {
+        ans = min(ans, memo(index+1, 1, 0)+b[index]);
+    } // calc is swap rn
+    if (consec < 2) {
+        if (whichg == 0) {
+            ans = min(ans, memo(index+1, consec+1, 0)+a[index]);
+        } else {
+            ans = min(ans, memo(index+1, consec+1, 1)+b[index]);
+        }
+    } // calc if take one more if possible
+    dp[index][consec][whichg] = ans;
+    return ans;
 }
 
-int main() {
+void solve() {
+    cin >> n;
+    for (ll q = 0; q < n; q++) {cin >> a[q];}
+    for (ll q = 0; q < n; q++) {cin >> b[q];}
+    memset(dp, -1, sizeof(dp));
+    ll ans = min(memo(0, 1, 0), memo(0, 1, 1));
+    cout << ans;
+
+}
+
+signed main() {
 ios_base::sync_with_stdio(false);cin.tie(NULL);
   ll tc=1;
   //cin >> tc;

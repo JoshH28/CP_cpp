@@ -55,31 +55,25 @@ typedef tree<ll,null_type,less<ll>,rb_tree_tag,tree_order_statistics_node_update
 typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset_ll;
 mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
 
-ll solve() {
-    ll n, one = 1; cin >> n;
-    ll energy[n]; ll disgust[n]; vector<ll> adjlist[n+1];
-    for (ll q = 0; q < n; q++) {cin >> energy[q];}
-    for (ll q = 0; q < n; q++) {
-        cin >> disgust[q]; ll target = q+disgust[q]+1;
-        if (target > n) {continue;}
-        adjlist[target].push_back(q);
-    }
-    ll dp[n+1]; memset(dp, -1, sizeof(dp)); dp[0] = energy[0];
-    for (ll q = 1; q <= n; q++) {
-        dp[q] = max(dp[q], dp[q-1]-energy[q-1]-one);
-        for (auto it: adjlist[q]) {
-            dp[q] = max(dp[it]-q+it, dp[q]);
+void solve() {
+    ll num; cin >> num;
+    ll cnt = 2;
+    ll pnum = 1;
+    bool check = true;
+    for (ll q = 2; q < 30; q++) {
+        ll d = (1 << q) - 1;
+        //cout << cnt << " ";
+        if (num%d == 0) {
+            cout << num/d << "\n";
+            check = false;
+            break;
         }
-        if (dp[q] == -1) {continue;}
-        dp[q] += energy[q];
     }
-    ll ans = dp[n-1];
-    return ans;
 }
 
 int main() {
 ios_base::sync_with_stdio(false);cin.tie(NULL);
   ll tc=1;
-  //cin >> tc;
-  for (ll q = 0; q < tc; q++) {cout << solve();}
+  cin >> tc;
+  for (ll q = 0; q < tc; q++) {solve();}
 }

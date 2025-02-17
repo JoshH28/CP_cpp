@@ -47,6 +47,7 @@ using namespace std;
 using namespace std;
 using namespace __gnu_pbds;
 #define INTMAX 2147483647
+#define INT_MAX LONG_LONG_MAX
 typedef long long ll;
 typedef unsigned long long ull;
 typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
@@ -55,31 +56,28 @@ typedef tree<ll,null_type,less<ll>,rb_tree_tag,tree_order_statistics_node_update
 typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset_ll;
 mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
 
-ll solve() {
-    ll n, one = 1; cin >> n;
-    ll energy[n]; ll disgust[n]; vector<ll> adjlist[n+1];
-    for (ll q = 0; q < n; q++) {cin >> energy[q];}
-    for (ll q = 0; q < n; q++) {
-        cin >> disgust[q]; ll target = q+disgust[q]+1;
-        if (target > n) {continue;}
-        adjlist[target].push_back(q);
-    }
-    ll dp[n+1]; memset(dp, -1, sizeof(dp)); dp[0] = energy[0];
-    for (ll q = 1; q <= n; q++) {
-        dp[q] = max(dp[q], dp[q-1]-energy[q-1]-one);
-        for (auto it: adjlist[q]) {
-            dp[q] = max(dp[it]-q+it, dp[q]);
+void solve() {
+    ll n, k, mod =  1000000007; cin >> n >> k;
+    ll dp[n+1][2];
+    dp[1][0] = 0; dp[1][1] = 1;
+    for (ll q = 2; q <= n; q++) {
+        dp[q][0] = (dp[q-1][0])%mod + (dp[q-1][1])%mod;
+        dp[q][0]%=mod;
+        dp[q][1] = (dp[q][0])%mod;
+        if (q-k > 0) {
+            dp[q][1] -= (dp[q-k][0])%mod;
         }
-        if (dp[q] == -1) {continue;}
-        dp[q] += energy[q];
+        dp[q][1] += mod;
+        dp[q][1] %= mod;
     }
-    ll ans = dp[n-1];
-    return ans;
+    ll ans = dp[n][1]-dp[n-k+1][1];
+    ans += mod; ans %= mod;
+    cout << ans;
 }
 
 int main() {
 ios_base::sync_with_stdio(false);cin.tie(NULL);
   ll tc=1;
   //cin >> tc;
-  for (ll q = 0; q < tc; q++) {cout << solve();}
+  for (ll q = 0; q < tc; q++) {solve();}
 }

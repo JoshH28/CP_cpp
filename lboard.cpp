@@ -47,6 +47,7 @@ using namespace std;
 using namespace std;
 using namespace __gnu_pbds;
 #define INTMAX 2147483647
+#define INT_MAX LONG_LONG_MAX
 typedef long long ll;
 typedef unsigned long long ull;
 typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
@@ -55,31 +56,49 @@ typedef tree<ll,null_type,less<ll>,rb_tree_tag,tree_order_statistics_node_update
 typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset_ll;
 mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
 
-ll solve() {
-    ll n, one = 1; cin >> n;
-    ll energy[n]; ll disgust[n]; vector<ll> adjlist[n+1];
-    for (ll q = 0; q < n; q++) {cin >> energy[q];}
-    for (ll q = 0; q < n; q++) {
-        cin >> disgust[q]; ll target = q+disgust[q]+1;
-        if (target > n) {continue;}
-        adjlist[target].push_back(q);
-    }
-    ll dp[n+1]; memset(dp, -1, sizeof(dp)); dp[0] = energy[0];
-    for (ll q = 1; q <= n; q++) {
-        dp[q] = max(dp[q], dp[q-1]-energy[q-1]-one);
-        for (auto it: adjlist[q]) {
-            dp[q] = max(dp[it]-q+it, dp[q]);
+void solve() {
+    ll r, c, ans=-INT_MAX; cin >> r >> c; 
+    ll board[r][c]; ll rows[r][c]; 
+    for (ll q = 0; q < r; q++) {
+        for (ll w = 0; w < c; w++) {
+            cin >> board[q][w];
+            rows[q][w] = -INT_MAX; rows[q][w] = -INT_MAX;
         }
-        if (dp[q] == -1) {continue;}
-        dp[q] += energy[q];
     }
-    ll ans = dp[n-1];
-    return ans;
+    for (ll q = 0; q < r; q++) {
+        ll curr = 0;
+        for (ll w = 0; w < c; w++) {
+            rows[q][w] = curr;
+            curr += board[q][w];
+            curr = max(curr, 0ll);
+        }
+        curr = 0;
+        for (ll w = c-1; w >= 0; w--) {
+            rows[q][w] = max(rows[q][w], curr);
+            curr += board[q][w];
+            curr = max(0ll, curr);
+        }
+    }
+    for (ll w = 0; w < c; w++) {
+        ll curr = 0;
+        for (ll q = 0; q < r; q++) {
+            ans = max(ans, rows[q][w] + curr + board[q][w]);
+            curr += board[q][w];
+            curr = max(0ll, curr);
+        }
+        curr = 0;
+        for (ll q = r-1; q >= 0; q--) {
+            ans = max(ans, rows[q][w] + curr + board[q][w]);
+            curr += board[q][w];
+            curr = max(0ll, curr);
+        }
+    }
+    cout << ans;
 }
 
 int main() {
 ios_base::sync_with_stdio(false);cin.tie(NULL);
   ll tc=1;
   //cin >> tc;
-  for (ll q = 0; q < tc; q++) {cout << solve();}
+  for (ll q = 0; q < tc; q++) {solve();}
 }

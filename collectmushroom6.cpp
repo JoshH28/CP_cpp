@@ -50,12 +50,13 @@ void solve() {
     ll r, c, range, harvestn, num=0, cnt=0; char a; cin >> r >> c >> range >> harvestn;
     queue<pair<ll,ll>> mushrooms; 
     ll arr[r+1][c+1]; ll sum[r+1][c+1]; 
+    memset(sum, 0, sizeof(sum));
     for (ll q = 1; q <= r; q++) {
         for (ll w = 1; w <= c; w++) {
             cin >> a;
             if (a == 'M') {
-                mushrooms.push(MP(q,w));
                 arr[q][w] = 0;
+                mushrooms.push(MP(q, w));
             } else if (a == 'S') {
                 arr[q][w] = 1;
             } else {
@@ -72,16 +73,17 @@ void solve() {
         ll y = mushrooms.front().first;
         ll x = mushrooms.front().second;
         mushrooms.pop();
-        ll y1 = max(y-range-1, 1ll);
-        ll y2 = min(y+range+1, r);
-        ll x1 = max(x-range-1, 1ll);
-        ll x2 = min(x+range+1, c);
-        cnt = sum[y2][x2] - sum[y2][x1] - sum[y1][x2] + sum[y1][x1];
+        ll y1 = max(y-range, 1ll);
+        ll y2 = min(y+range, r);
+        ll x1 = max(x-range, 1ll);
+        ll x2 = min(x+range, c);
+        cnt = sum[y2][x2] - sum[y2][x1-1] - sum[y1-1][x2] + sum[y1-1][x1-1];
+        // cnt = sum[y2][x2] -  sum[y1][x1];
         if (cnt >= harvestn) {
             num += 1;
         }
+        //cout << cnt << " ";
     }
-
     cout << num;
 }
 

@@ -47,6 +47,8 @@ using namespace std;
 using namespace std;
 using namespace __gnu_pbds;
 #define INTMAX 2147483647
+#define INT_MAX LONG_LONG_MAX
+#define int long long
 typedef long long ll;
 typedef unsigned long long ull;
 typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
@@ -54,32 +56,45 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics
 typedef tree<ll,null_type,less<ll>,rb_tree_tag,tree_order_statistics_node_update> ordered_set_ll;
 typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset_ll;
 mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
+template<class K,class V> using ht = gp_hash_table<K,V,hash<K>,equal_to<K>,direct_mask_range_hashing<>,linear_probe_fn<>,hash_standard_resize_policy<hash_exponential_size_policy<>,hash_load_check_resize_trigger<>,true>>;
+// scem unordered_map and unordered_set, to use umap use ht<ll,ll>, emplace doesnt exist so use .insert(), .reserve() is .resize(),  to declare uset is ht<ll,null_type>, all other operations are same as regular
 
-ll solve() {
-    ll n, one = 1; cin >> n;
-    ll energy[n]; ll disgust[n]; vector<ll> adjlist[n+1];
-    for (ll q = 0; q < n; q++) {cin >> energy[q];}
-    for (ll q = 0; q < n; q++) {
-        cin >> disgust[q]; ll target = q+disgust[q]+1;
-        if (target > n) {continue;}
-        adjlist[target].push_back(q);
+ll dp[8001][3001];
+ll n,k;
+ll arr[8001]; ll psum[8001];
+ll gay = 1e12;
+ll memo(ll index, ll gno) {
+    if (index >= n) {return 0;}
+    if (gno <= 0) {return 1e13;}
+    if (dp[index][gno] != -1) {return dp[index][gno];}
+    ll ans = INT_MAX;
+    for (ll q = index+1; q <= n; q++) {
+        ll yes = (q-index)*(psum[q]-psum[index]);
+        ans = min(ans, yes + memo(q, gno-1));
     }
-    ll dp[n+1]; memset(dp, -1, sizeof(dp)); dp[0] = energy[0];
-    for (ll q = 1; q <= n; q++) {
-        dp[q] = max(dp[q], dp[q-1]-energy[q-1]-one);
-        for (auto it: adjlist[q]) {
-            dp[q] = max(dp[it]-q+it, dp[q]);
-        }
-        if (dp[q] == -1) {continue;}
-        dp[q] += energy[q];
-    }
-    ll ans = dp[n-1];
+  //cout << index << " " << gno << "\n";
+    dp[index][gno] = ans;
     return ans;
 }
 
-int main() {
+void solve() {
+    cin >> n >> k; //cout << n << " " << k << "\n";
+    memset(arr, 0, sizeof(arr)); memset(psum, 0, sizeof(psum)); memset(dp, -1, sizeof(dp));
+    for (ll q = 1; q <= n; q++) {cin >> arr[q]; psum[q] = arr[q]+psum[q-1]; //cout << arr[q] << " ";} 
+      }
+    ll ans = memo(0, k);
+    // for (ll q = 1; q <= n; q++) {
+    //     for (ll w = 1; w <= k; w++) {
+    //         cout << dp[q][w] << " ";
+    //     }
+    //     cout << "\n";
+    // }
+    cout << ans;
+}
+
+signed main() {
 ios_base::sync_with_stdio(false);cin.tie(NULL);
   ll tc=1;
   //cin >> tc;
-  for (ll q = 0; q < tc; q++) {cout << solve();}
+  for (ll q = 0; q < tc; q++) {solve();}
 }

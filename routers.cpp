@@ -47,6 +47,7 @@ using namespace std;
 using namespace std;
 using namespace __gnu_pbds;
 #define INTMAX 2147483647
+#define INT_MAX LONG_LONG_MAX
 typedef long long ll;
 typedef unsigned long long ull;
 typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
@@ -55,26 +56,43 @@ typedef tree<ll,null_type,less<ll>,rb_tree_tag,tree_order_statistics_node_update
 typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset_ll;
 mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
 
+bool cmp(pll one, pll two) {
+    if (one.first < two.first) {
+        return true;
+    } if (one.first > two.first) {
+        return false;
+    } if (one.second > two.second) {
+        return false;
+    } 
+    return true;
+}
+
 ll solve() {
-    ll n, one = 1; cin >> n;
-    ll energy[n]; ll disgust[n]; vector<ll> adjlist[n+1];
-    for (ll q = 0; q < n; q++) {cin >> energy[q];}
-    for (ll q = 0; q < n; q++) {
-        cin >> disgust[q]; ll target = q+disgust[q]+1;
-        if (target > n) {continue;}
-        adjlist[target].push_back(q);
+    ll n, rn; cin >> n >> rn;
+    vector<pll> arr;
+    for (ll q = 0; q < rn; q++) {
+        ll mid, range; cin >> mid >> range;
+        ll start = max(0ll, mid-range); ll end = mid+range;
+        arr.push_back(MP(start, end));
     }
-    ll dp[n+1]; memset(dp, -1, sizeof(dp)); dp[0] = energy[0];
-    for (ll q = 1; q <= n; q++) {
-        dp[q] = max(dp[q], dp[q-1]-energy[q-1]-one);
-        for (auto it: adjlist[q]) {
-            dp[q] = max(dp[it]-q+it, dp[q]);
+    sort(arr.begin(), arr.end());
+    ll curr = 0, ans = 0, q = 0;
+    while(curr < n) {
+      ll maxend = -INT_MAX; ll maxq = -INT_MAX;;
+      while (q < rn && arr[q].first <= curr) {
+        if (maxend <= arr[q].second) {
+          maxend = arr[q].second;
+          maxq = q;
         }
-        if (dp[q] == -1) {continue;}
-        dp[q] += energy[q];
+        q++;
+      }
+      if (maxq == -INT_MAX||maxend==-INT_MAX) {return -1;}
+      q = maxq;
+      curr = maxend; ans++;
+		q++;
     }
-    ll ans = dp[n-1];
-    return ans;
+  if (curr < n) {return -1;}
+  else {return ans;}
 }
 
 int main() {

@@ -47,6 +47,7 @@ using namespace std;
 using namespace std;
 using namespace __gnu_pbds;
 #define INTMAX 2147483647
+#define INT_MAX LONG_LONG_MAX
 typedef long long ll;
 typedef unsigned long long ull;
 typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
@@ -55,31 +56,40 @@ typedef tree<ll,null_type,less<ll>,rb_tree_tag,tree_order_statistics_node_update
 typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset_ll;
 mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
 
+ll dp[201][201][101];
+
+ll memo(ll index, ll n1, ll n5, ll n10) {
+    if (index == 0) {return 0;}
+    if (dp[index][n5][n10] != -1) {return dp[index][n5][n10];}
+    ll ans = INT_MAX;
+    if (n5 >= 2) {
+        ans = min(ans, memo(index-1, n1+2, n5-2, n10)+2);
+    } if (n10 >= 1) {
+        ans = min(ans, memo(index-1, n1+2, n5, n10-1)+1);
+    } if (n5 >= 1 && n1 >= 3) {
+        ans = min(ans, memo(index-1, n1-3, n5-1, n10)+4);
+    } if (n1 >= 8) {
+        ans = min(ans, memo(index-1, n1-8, n5, n10)+8);
+    } if (n5>=2 && n1 >= 3) {
+      ans = min(ans, memo(index-1, n1-3, n5-1, n10)+5);
+    } if (n10 >= 1 && n1 >= 3) {
+      ans = min(ans, memo(index-1, n1-3, n5+1, n10-1)+4);
+    }
+    dp[index][n5][n10] = ans;
+    return ans;
+}
+
 ll solve() {
-    ll n, one = 1; cin >> n;
-    ll energy[n]; ll disgust[n]; vector<ll> adjlist[n+1];
-    for (ll q = 0; q < n; q++) {cin >> energy[q];}
-    for (ll q = 0; q < n; q++) {
-        cin >> disgust[q]; ll target = q+disgust[q]+1;
-        if (target > n) {continue;}
-        adjlist[target].push_back(q);
-    }
-    ll dp[n+1]; memset(dp, -1, sizeof(dp)); dp[0] = energy[0];
-    for (ll q = 1; q <= n; q++) {
-        dp[q] = max(dp[q], dp[q-1]-energy[q-1]-one);
-        for (auto it: adjlist[q]) {
-            dp[q] = max(dp[it]-q+it, dp[q]);
-        }
-        if (dp[q] == -1) {continue;}
-        dp[q] += energy[q];
-    }
-    ll ans = dp[n-1];
+    ll cn, oc,fc, tn; cin >> cn >> oc >> fc >> tn;
+    //memset(dp, -1, sizeof(dp));
+    ll ans = memo(cn, oc, fc, tn);
     return ans;
 }
 
 int main() {
 ios_base::sync_with_stdio(false);cin.tie(NULL);
   ll tc=1;
-  //cin >> tc;
-  for (ll q = 0; q < tc; q++) {cout << solve();}
+  memset(dp, -1, sizeof(dp));
+  cin >> tc;
+  for (ll q = 0; q < tc; q++) {cout << solve() << "\n";}
 }

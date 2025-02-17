@@ -47,6 +47,8 @@ using namespace std;
 using namespace std;
 using namespace __gnu_pbds;
 #define INTMAX 2147483647
+#define INT_MAX LONG_LONG_MAX
+#define int long long
 typedef long long ll;
 typedef unsigned long long ull;
 typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
@@ -54,32 +56,37 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics
 typedef tree<ll,null_type,less<ll>,rb_tree_tag,tree_order_statistics_node_update> ordered_set_ll;
 typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset_ll;
 mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
+template<class K,class V> using ht = gp_hash_table<K,V,hash<K>,equal_to<K>,direct_mask_range_hashing<>,linear_probe_fn<>,hash_standard_resize_policy<hash_exponential_size_policy<>,hash_load_check_resize_trigger<>,true>>;
+// scem unordered_map and unordered_set, to use umap use ht<ll,ll>, emplace doesnt exist so use .insert(), .reserve() is .resize(),  to declare uset is ht<ll,null_type>, all other operations are same as regular
 
-ll solve() {
-    ll n, one = 1; cin >> n;
-    ll energy[n]; ll disgust[n]; vector<ll> adjlist[n+1];
-    for (ll q = 0; q < n; q++) {cin >> energy[q];}
-    for (ll q = 0; q < n; q++) {
-        cin >> disgust[q]; ll target = q+disgust[q]+1;
-        if (target > n) {continue;}
-        adjlist[target].push_back(q);
-    }
-    ll dp[n+1]; memset(dp, -1, sizeof(dp)); dp[0] = energy[0];
-    for (ll q = 1; q <= n; q++) {
-        dp[q] = max(dp[q], dp[q-1]-energy[q-1]-one);
-        for (auto it: adjlist[q]) {
-            dp[q] = max(dp[it]-q+it, dp[q]);
+void solve() {
+    ll dayn, keepn, ans=0;; cin >> dayn >> keepn; 
+    ll arr[dayn]; ll lim[dayn];
+    priority_queue<pll, vector<pll>, greater<pll>> pq;
+    for (ll q = 0; q < dayn; q++) {cin >> arr[q];}
+    for (ll q = 0; q < dayn; q++) {cin >> lim[q];}
+    for (ll q = 0; q < dayn; q++) {
+        pq.push(MP(q, arr[q]));
+        ll limit = lim[q];
+        while (pq.size() > keepn+1) {pq.pop();}
+        while(!pq.empty() && pq.top().se <= limit) {
+            limit-=pq.top().se;
+            ans += pq.top().se;
+            pq.pop();
         }
-        if (dp[q] == -1) {continue;}
-        dp[q] += energy[q];
+        if (!pq.empty()) {
+            ans += limit;
+            ll hmm = pq.top().fi; ll yes = pq.top().se-limit;
+            pq.pop(); pq.push(MP(hmm, yes));
+        }
+        //cout << ans << " ";
     }
-    ll ans = dp[n-1];
-    return ans;
+    cout << ans;
 }
 
-int main() {
+signed main() {
 ios_base::sync_with_stdio(false);cin.tie(NULL);
   ll tc=1;
   //cin >> tc;
-  for (ll q = 0; q < tc; q++) {cout << solve();}
+  for (ll q = 0; q < tc; q++) {solve();}
 }

@@ -40,7 +40,7 @@ typedef long long ll;
 typedef pair<long long int, long long int> pi;
 void solve() {
   ll r,c; 
-  cin >> c >> r;
+  cin >> r >> c;
   ll grid[r][c]; ll dp[r][c];
   for (ll q = 0; q < r; q++) {
     for (ll w = 0; w < c; w++) {
@@ -83,14 +83,14 @@ void solve() {
       if (grid[y][x] == 0) {
         nd += 1;
       }
-      if (dp[y][x+1] == -1 || dp[y+1][x] > nd) {
+      if (dp[y][x+1] == -1 || dp[y][x+1] > nd) {
         dp[y][x+1] = nd;
         bfs.push(MP(nd,MP(y,x+1)));
       }
     } 
     if (x-1 >= 0) {
       ll nd = d;
-      if (grid[y][x] == 1) {
+      if (grid[y][x] == 0) {
         nd+=1;
       }
       if (dp[y][x-1] == -1 || dp[y][x-1] > nd) {

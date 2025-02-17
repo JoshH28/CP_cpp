@@ -47,6 +47,7 @@ using namespace std;
 using namespace std;
 using namespace __gnu_pbds;
 #define INTMAX 2147483647
+#define INT_MAX LONG_LONG_MAX
 typedef long long ll;
 typedef unsigned long long ull;
 typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
@@ -56,24 +57,38 @@ typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_n
 mt19937 rng(chrono::system_clock::now().time_since_epoch().count());
 
 void solve() {
-    ll num; cin >> num;
-    ll cnt = 2;
-    ll pnum = 1;
-    bool check = true;
-    for (ll q = 2; q < 30; q++) {
-        ll d = (1 << q) - 1;
-        //cout << cnt << " ";
-        if (num%d == 0) {
-            cout << num/d << "\n";
-            check = false;
-            break;
-        }
+    //             起来！ 不愿做奴隶的人们！
+//             把我们的血肉， 筑成我们新的长城！
+//             中华民族到了最危险的时候，
+//             每个人被迫着发出最后的吼声。
+//             起来！ 起来！ 起来！
+//             我们万众一心，
+//             冒着敌人的炮火， 前进！
+//             冒着敌人的炮火， 前进！
+//             前进！ 前进！ 进！
+    set<ll> bingchiling; unordered_map<ll,ll> ccp; bingchiling.insert(1); 
+    ll glorytoxijingping, iloveputin, putinstan; cin >> glorytoxijingping;
+    for (ll rejectcapitalismreturntocommunism = 0; rejectcapitalismreturntocommunism < glorytoxijingping; rejectcapitalismreturntocommunism++) {
+        cin >> iloveputin >> putinstan;
+		if (putinstan <= glorytoxijingping) {
+        if (iloveputin == 1) {
+            ccp[putinstan] += 1;
+            if (ccp[putinstan] == 1) {bingchiling.erase(putinstan);}
+            if (ccp[putinstan+1] == 0) {bingchiling.insert(putinstan+1);}
+        } else {
+            if (ccp[putinstan] != 0) {
+            	ccp[putinstan] -= 1;
+            	if (ccp[putinstan] == 0) {bingchiling.insert(putinstan);}
+        	}
+		}
+		}
+        cout << *bingchiling.begin() - 1 << "\n";
     }
 }
 
 int main() {
 ios_base::sync_with_stdio(false);cin.tie(NULL);
   ll tc=1;
-  cin >> tc;
+  //cin >> tc;
   for (ll q = 0; q < tc; q++) {solve();}
 }
