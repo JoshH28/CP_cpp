@@ -104,20 +104,35 @@ const int dx[] = {-1, -1, 0, 1, 1, 1, 0, -1}; //to do 4dir skip every odd index
 const int dy[] = {0, 1, 1, 1, 0, -1, -1, -1}; //to do 4dir skip every odd index
 
 void solve() {
-    ll n, k; cin >> n >> k; ll arr[n+10];
-    for (ll q = 0; q < n; q++) cin >> arr[q];
-    k = min(k, n); ll last = n-1;
-    for (ll q = 0; q < k; q++) {
-      if (arr[last] > n) {cout << "No\n"; return;}
-      last += (n - arr[last]);
-      if (last >= n) last -= n;
+    ll n; cin >> n; ll arr[n+10], copy[n+10];
+    for (ll q = 0; q < n; q++) {
+        cin >> arr[q]; copy[q] = arr[q];
     }
-    cout << "Yes\n";  
+    map<ll, priority_queue<ll, vector<ll>, greater<ll>>> odd;
+    map<ll, priority_queue<ll, vector<ll>, greater<ll>>> even;
+    sort(copy, copy+n);
+    for (ll q = 0; q < n; q++) {
+        if (q%2 == 0) odd[copy[q]].push(q);
+        else even[copy[q]].push(q); 
+    }
+    for (ll q = 0; q < n; q++) {
+        if (q % 2 == 0) {
+            if (odd[arr[q]].size()==0) {cout << "NO\n"; return;}
+            ll frontelem = odd[arr[q]].top();
+            odd[arr[q]].pop();
+        } else {
+            if (even[arr[q]].size()==0) {cout << "NO\n"; return;}
+            if (even[arr[q]].size()==0) {cout << "NO\n"; return;}
+            ll frontelem = even[arr[q]].top();
+            even[arr[q]].pop();
+        }
+    }
+    cout << "YES\n"; return;
+
 }
 
 signed main() {
 ios_base::sync_with_stdio(false);cin.tie(NULL);
-  ll tc=1;
-  cin >> tc;
+  ll tc=1; cin >> tc;
   for (ll q = 0; q < tc; q++) {solve();}
 }

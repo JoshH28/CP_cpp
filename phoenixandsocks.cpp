@@ -25,6 +25,7 @@
 // So bag your fries
 // Gifting galaxiеs on TikTok Live, Ohio
 
+// Jelly House
 // [Pre-Chorus]
 // 'Cause you were DomTheTroll, I was a fade, low taper
 // Batman daddy said, "I'm so fucking pissed"
@@ -104,15 +105,50 @@ const int dx[] = {-1, -1, 0, 1, 1, 1, 0, -1}; //to do 4dir skip every odd index
 const int dy[] = {0, 1, 1, 1, 0, -1, -1, -1}; //to do 4dir skip every odd index
 
 void solve() {
-    ll n, k; cin >> n >> k; ll arr[n+10];
-    for (ll q = 0; q < n; q++) cin >> arr[q];
-    k = min(k, n); ll last = n-1;
-    for (ll q = 0; q < k; q++) {
-      if (arr[last] > n) {cout << "No\n"; return;}
-      last += (n - arr[last]);
-      if (last >= n) last -= n;
+    ll n, l, r, t1; cin >> n >> l >> r;
+    vector<ll> left, right;
+    for (ll q = 0; q < l; q++) {cin >> t1; left.pb(t1);}
+    for (ll q = 0; q < r; q++) {cin >> t1; right.pb(t1);}
+    if (l == r) {
+        map<ll, ll> leftcnt, rightcnt;  
+        for (auto it: left) leftcnt[it]++;
+        for (auto it: right) rightcnt[it]++;
+        ll ans = 0;
+        for (ll q = 1; q <= n; q++) ans -= min(leftcnt[q], rightcnt[q]);  
+        cout << ans << "\n"; return;    
+    } else if (l > r) {
+        map<ll, ll> leftcnt, rightcnt;  
+        for (auto it: left) leftcnt[it]++;
+        for (auto it: right) rightcnt[it]++;
+        ll ans = 0;
+        for (ll q = 1; q <= n; q++) {
+            ll diff = leftcnt[q] - rightcnt[q];
+            if (diff > 0) {
+                ll minval = min(diff, (l - r) / 2);
+                ans += minval;
+                leftcnt[q] -= minval;
+                l -= minval;
+            }   
+        }
+        for (ll q = 1; q <= n; q++) ans -= min(leftcnt[q], rightcnt[q]);
+        cout << ans << "\n"; return;   
+    } else {
+        map<ll, ll> leftcnt, rightcnt;  
+        for (auto it: left) leftcnt[it]++;
+        for (auto it: right) rightcnt[it]++;
+        ll ans = 0;
+        for (ll q = 1; q <= n; q++) {
+            ll diff = rightcnt[q] - leftcnt[q];
+            if (diff > 0) {
+                ll minval = min(diff, (r - l) / 2);
+                ans += minval;
+                rightcnt[q] -= minval;
+                r -= minval;
+            }   
+        }
+        for (ll q = 1; q <= n; q++) ans -= min(leftcnt[q], rightcnt[q]);
+        cout << ans << "\n"; return;
     }
-    cout << "Yes\n";  
 }
 
 signed main() {

@@ -25,6 +25,7 @@
 // So bag your fries
 // Gifting galaxiеs on TikTok Live, Ohio
 
+// Jelly House
 // [Pre-Chorus]
 // 'Cause you were DomTheTroll, I was a fade, low taper
 // Batman daddy said, "I'm so fucking pissed"
@@ -104,20 +105,35 @@ const int dx[] = {-1, -1, 0, 1, 1, 1, 0, -1}; //to do 4dir skip every odd index
 const int dy[] = {0, 1, 1, 1, 0, -1, -1, -1}; //to do 4dir skip every odd index
 
 void solve() {
-    ll n, k; cin >> n >> k; ll arr[n+10];
-    for (ll q = 0; q < n; q++) cin >> arr[q];
-    k = min(k, n); ll last = n-1;
-    for (ll q = 0; q < k; q++) {
-      if (arr[last] > n) {cout << "No\n"; return;}
-      last += (n - arr[last]);
-      if (last >= n) last -= n;
+    ll n, k; cin >> n >> k;
+    string s; cin >> s;
+    
+    char mchar = 'a';
+
+    for (ll q = 0; q < n; q++) {
+        if (s[q] - 'a' > k) {  
+            k -= (mchar - 'a'); 
+            ll newto = s[q] - k; 
+            for (char c = s[q]; c > newto; c--) { 
+                for (char &e : s) {
+                    if (e == c) e = char(c - 1);
+                }
+            }
+            break; 
+        } else { 
+            mchar = max(mchar, s[q]);
+        }
     }
-    cout << "Yes\n";  
+
+    for (char &e : s) {
+        if (e <= mchar) e = 'a';
+    }
+
+    cout << s << "\n";
 }
 
 signed main() {
 ios_base::sync_with_stdio(false);cin.tie(NULL);
-  ll tc=1;
-  cin >> tc;
+  ll tc=1; cin >> tc;
   for (ll q = 0; q < tc; q++) {solve();}
 }

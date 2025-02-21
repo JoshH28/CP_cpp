@@ -104,15 +104,45 @@ const int dx[] = {-1, -1, 0, 1, 1, 1, 0, -1}; //to do 4dir skip every odd index
 const int dy[] = {0, 1, 1, 1, 0, -1, -1, -1}; //to do 4dir skip every odd index
 
 void solve() {
-    ll n, k; cin >> n >> k; ll arr[n+10];
-    for (ll q = 0; q < n; q++) cin >> arr[q];
-    k = min(k, n); ll last = n-1;
-    for (ll q = 0; q < k; q++) {
-      if (arr[last] > n) {cout << "No\n"; return;}
-      last += (n - arr[last]);
-      if (last >= n) last -= n;
+    ll n, m, k; cin >> n >> m >> k;
+    char grid[n+10][m+10];
+    ll vis[n+10][m+10];
+    for (ll q = 0; q < n; q++) {
+        for (ll w = 0; w < m; w++) {
+            cin >> grid[q][w]; vis[q][w] = 0;
+        }
     }
-    cout << "Yes\n";  
+    for (ll q = 0; q < n; q++) {
+        for (ll w = 0; w < m; w++) {
+            if (grid[q][w] == '.'|| vis[q][w] == 1) continue;
+            ll level = 0; ll currleftcol = w, currrightcol = w;
+            while (q - level >= 0 && currleftcol >= 0 && currrightcol < m) {
+                if (grid[q-level][currleftcol] == '*' && grid[q-level][currrightcol] == '*') {
+                    level++; currleftcol--; currrightcol++;
+                } else break;
+            }
+            level--;
+            if (level >= k) {
+                vis[q][w] = 1;
+                ll level = 0; ll currleftcol = w, currrightcol = w;
+                while (q - level >= 0 && currleftcol >= 0 && currrightcol < m) {
+                    if (grid[q-level][currleftcol] == '*' && grid[q-level][currrightcol] == '*') {
+                        vis[q-level][currrightcol]=1; vis[q-level][currleftcol] = 1;
+                        level++; currleftcol--; currrightcol++; 
+                    } else break;
+                }
+            }
+        }
+    }
+    for (ll q = 0; q < n; q++) {
+        for (ll w = 0; w < m; w++) {
+            if (grid[q][w] == '*' && vis[q][w]!=1) {
+                cout << "NO\n"; return;
+            }
+        }
+    }
+    cout << "YES\n"; return;
+
 }
 
 signed main() {
